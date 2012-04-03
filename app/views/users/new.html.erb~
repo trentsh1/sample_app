@@ -2,7 +2,6 @@
 
 <%= form_for(@user) do |f| %>
 	<div class="field">
-	<%= render 'shared/error_messages' %>
 		<%= f.label :name %><br />
 		<%= f.text_field :name %>
 	</div>
