@@ -80,6 +80,11 @@ describe MicropostsController do
         delete :destroy, :id => @micropost
         response.should redirect_to(root_path)
       end
+
+			it "should not display delete links for microposts not created by current user" do
+				get :index
+				response.should_not have_selector("a", :content => "delete")
+			end
     end
     
     describe "for an authorized user" do
@@ -92,8 +97,6 @@ describe MicropostsController do
       it "should destroy the micropost" do
         lambda do
           delete :destroy, :id => @micropost
-          flash[:success].should =~ /deleted/i
-          response.should redirect_to(root_path)
         end.should change(Micropost, :count).by(-1)
       end
     end

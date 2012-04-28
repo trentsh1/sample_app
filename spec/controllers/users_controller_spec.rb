@@ -102,6 +102,20 @@ describe UsersController do
       response.should have_selector('span.content', :content => mp1.content)
       response.should have_selector('span.content', :content => mp2.content)
     end
+
+		it "should paginate microposts" do
+      31.times { Factory(:micropost, :user => @user, :content => "test") }
+      get :show, :id => @user
+      response.should have_selector('div.pagination')
+    end
+
+		it "should not display delete links for microposts not created by current user" do
+			test_sign_in(@user)
+			get :show, :id => @user
+			if (@user=="true")
+				it {should_not have_selector("a", :data-method="delete")}
+      end
+    end
   end
 
   describe "GET 'new'" do
