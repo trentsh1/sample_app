@@ -14,6 +14,20 @@ class UsersController < ApplicationController
 		@title = @user.name
 	end
 
+	def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.following.paginate(:page => params[:page])
+    render 'show_follow'
+  end
+  
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(:page => params[:page])
+    render 'show_follow'
+  end
+
 	def new
 		if signed_in?
 			redirect_to(root_path)
@@ -64,10 +78,6 @@ class UsersController < ApplicationController
 	end
 	
 	private
-
-		def authenticate
-			deny_access unless signed_in?
-		end
 
 		def correct_user
 			@user = User.find(params[:id])
