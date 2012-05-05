@@ -265,6 +265,20 @@ require 'spec_helper'
       @user.follow!(@followed)
       @followed.followers.should include(@user)
     end
+
+		it "should destroy associated relationships" do
+			@user.destroy
+			[@followed].each do |followed|
+				Relationship.find_by_followed_id(followed).should be_nil
+			end
+		end
+
+		it "should destroy associated reverse_relationships" do
+			@user.destroy
+			[@followed].each do |follower|
+				Relationship.find_by_followed_id(follower).should be_nil
+			end
+		end
   end
 end
 
